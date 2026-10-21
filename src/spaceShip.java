@@ -1,25 +1,50 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class spaceShip {
 
     public static void main(String[] args) {
 
-        ArrayList<human> folks = new ArrayList<>();
-
-        engineer Jebediah = new engineer("jeb1");
-        engineer Jebediah2 = new engineer("jeb2");
-
-        folks.add(Jebediah);
-        folks.add(Jebediah2);
+        ArrayList<human> folks = Populate();
 
         for (human human : folks) {
             System.out.println(human.name);
         }
 
-        System.out.println(Jebediah.hunger);
-        // eatFood(Jebediah);
-        System.out.println(Jebediah.hunger);
 
+        String response = consoleInput(Arrays.asList("aa","bb"));
+        System.out.println(response);
+        
+    }
+
+    static String consoleInput(List<String> options){
+        String input = "[RESPONSE GOES HERE]";
+
+        while (true) {
+            input = System.console().readLine("input: ");
+
+            if (options.contains(input)){break;}
+            else { System.out.println("Error: " + input); }
+        }
+        return input;
+    }
+
+    static ArrayList<human> Populate() {
+        ArrayList<human> folks = new ArrayList<>();
+
+        engineer Jebediah = new engineer("jeb1");
+        folks.add(Jebediah);
+
+        engineer Jebediah2 = new engineer("jeb2");
+        folks.add(Jebediah2);
+
+
+        // System.out.println(Jebediah.hunger);
+        // // eatFood(Jebediah);
+        // System.out.println(Jebediah.hunger);
+
+        return folks;
     }
 
     enum hurtScale {
