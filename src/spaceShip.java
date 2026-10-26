@@ -71,6 +71,9 @@ public class spaceShip {
                 }
 
             }
+            for (int i = 1; i < 2; i++) {
+                perRoundCheck();
+            }
             hallwayRoomScene();
         }
 
@@ -249,17 +252,17 @@ public class spaceShip {
         boolean proceed = true;
 
         if (!spaceShipLevels.oxygenFixed) {
-            spaceShipLevels.oxygenProcent -= 10;
             System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
             System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
-                    + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
+            + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
             System.out.println();
-
+            
             if (spaceShipLevels.oxygenProcent <= 0) {
                 youLoseScene();
                 proceed = false;
             }
-
+            
+            spaceShipLevels.oxygenProcent -= 10;
         }
 
         if (!spaceShipLevels.reactorFixed) {
