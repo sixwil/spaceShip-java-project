@@ -82,7 +82,7 @@ public class spaceShip {
         if (response.equals("1")) {
             for (int i = 0; i < 100; i++) {
                 System.out.println(
-                        "\n".repeat(10) + "Progress: [" + "#".repeat(i) + "_".repeat(100 - i) + "] " + i + "%");
+                        "\n".repeat(100) + "Progress: [" + "#".repeat(i) + "_".repeat(100 - i) + "] " + i + "%");
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -90,6 +90,7 @@ public class spaceShip {
                 }
 
             }
+            System.out.println( "\n".repeat(100) );
             for (int i = 1; i < 2; i++) {
                 perRoundCheck();
             }
@@ -369,7 +370,8 @@ public class spaceShip {
             if (!spaceShipLevels.reactorFixed) {
                 spaceShipLevels.reactorPressureProcent *= 2;
 
-                // we do it like this because its more annoying to alternate between int and double so... this works:
+                // we do it like this because its more annoying to alternate between int and
+                // double so... this works:
                 int halfPressure = spaceShipLevels.reactorPressureProcent / 2;
 
                 if (halfPressure > 100) {
@@ -409,7 +411,7 @@ public class spaceShip {
 
         // Might make actions taken increase by custom value, but for now all actions
         // take the same amount of time.
-        
+
         boolean proceed = perRoundCheck();
         if (proceed) {
             return input;
