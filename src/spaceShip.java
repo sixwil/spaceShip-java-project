@@ -305,7 +305,7 @@ public class spaceShip {
                     maybe they give you a reward if you help them? what do you do?
                     1. go check it out
                     2. dont
-                    (type only the corresponding number or in the console and then press enter)
+                    (type only the corresponding number in the console and then press enter)
                 """);
 
         String response = consoleInput(Arrays.asList("1", "2", "0"));
@@ -344,6 +344,7 @@ public class spaceShip {
     }
 
     static boolean perRoundCheck() {
+        actionstaken += 1;
         boolean proceed = true;
 
         if (!finished) {
@@ -367,19 +368,23 @@ public class spaceShip {
 
             if (!spaceShipLevels.reactorFixed) {
                 spaceShipLevels.reactorPressureProcent *= 2;
-                if (spaceShipLevels.reactorPressureProcent > 100) {
-                    spaceShipLevels.reactorPressureProcent = 100;
+
+                // we do it like this because its more annoying to alternate between int and double so... this works:
+                int halfPressure = spaceShipLevels.reactorPressureProcent / 2;
+
+                if (halfPressure > 100) {
+                    halfPressure = 100;
                 }
 
-                if (spaceShipLevels.reactorPressureProcent >= 100) {
+                if (halfPressure >= 100) {
                     System.out.println("the reactor explodes");
                     youLoseScene();
                     proceed = false;
                 }
 
-                System.out.println("Reactor pressure level: " + spaceShipLevels.reactorPressureProcent + "%");
-                System.out.println("[" + "#".repeat(spaceShipLevels.reactorPressureProcent)
-                        + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
+                System.out.println("Reactor pressure level: " + halfPressure + "%");
+                System.out.println("[" + "#".repeat(halfPressure)
+                        + "_".repeat(100 - halfPressure) + "]");
                 System.out.println();
 
             }
@@ -404,7 +409,7 @@ public class spaceShip {
 
         // Might make actions taken increase by custom value, but for now all actions
         // take the same amount of time.
-        actionstaken += 1;
+        
         boolean proceed = perRoundCheck();
         if (proceed) {
             return input;
