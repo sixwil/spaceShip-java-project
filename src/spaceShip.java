@@ -4,10 +4,16 @@ import java.util.List;
 
 public class spaceShip {
 
+    class spaceShipLevels {
+        static int oxygenProcent = 50;
+        static Boolean   reactorFixed = false;
+        static Boolean oxygenFixed = false;
+
+    }
+// actionstaken keeps takes of how many actions are taken, does nothing now  but might be used in future.
     static int actionstaken = 0;
+    
     // static int currentSceneId = 0;
-    static Boolean reactorFixed = false;
-    static Boolean oxygenFixed = false;
 
     public static void main(String[] args) {
 
@@ -52,7 +58,7 @@ public class spaceShip {
         if (response.equals("1")) {
             for (int i = 0; i < 100; i++) {
                 System.out.println(
-                        "\n".repeat(10) + "Progress: [" + "#".repeat(i) + " ".repeat(100 - i) + "] " + i + "%");
+                        "\n".repeat(10) + "Progress: [" + "#".repeat(i) + "_".repeat(100 - i) + "] " + i + "%");
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -79,13 +85,13 @@ public class spaceShip {
     }
 
     static void hallwayRoomScene() {
-        if (reactorFixed && oxygenFixed) {
+        if    (spaceShipLevels.reactorFixed && spaceShipLevels.oxygenFixed) {
             System.out.println("you fixed all the things and now you get to go home");
             youWinScene();
-        } else if (reactorFixed) {
+        } else if    (spaceShipLevels.reactorFixed) {
             System.out.println("you go towards the other room (oxygen)");
             oxygenRoomScene();
-        } else if (oxygenFixed) {
+        } else if (spaceShipLevels.oxygenFixed) {
             System.out.println("you go towards the other room (reactor)");
             reactorRoomScene(0, 0);
         } else {
@@ -116,7 +122,7 @@ public class spaceShip {
 
         // System.out.println("you go towards the");
 
-        if (reactorFixed) {
+        if    (spaceShipLevels.reactorFixed) {
             System.out.println("""
                     The oxygen runs out before you make it inside, everyone dies
                     """);
@@ -129,7 +135,7 @@ public class spaceShip {
                     fix it?
                     1. Close the window""");
 
-            if (!reactorFixed) {
+            if (   spaceShipLevels.reactorFixed) {
                 System.out.println("2. Check out reactor room first");
                 response = consoleInput(Arrays.asList("1", "2"));
                 if (response.contains("2")) {
@@ -141,7 +147,7 @@ public class spaceShip {
 
             if (response.contains("1")) {
                 System.out.println("you close the window, why do they even have that?");
-                oxygenFixed = true;
+                spaceShipLevels.oxygenFixed = true;
                 hallwayRoomScene();
             }
 
@@ -161,7 +167,7 @@ public class spaceShip {
         }
 
         if (bonkLevel == 4) {
-            reactorFixed = true;
+           spaceShipLevels.reactorFixed = true;
             System.out.println("""
                         your technical expertise forces the reactor back online
                     """);
@@ -222,6 +228,16 @@ public class spaceShip {
         System.out.println("YOU WIN, GOOD NIGHT MA'AM -bill the normal");
     }
 
+    static void perRoundCheck() {
+        // if 
+     if (! spaceShipLevels.oxygenFixed) {
+        spaceShipLevels.oxygenProcent -= 5; 
+        System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%" );
+        System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent) + "_".repeat(100-spaceShipLevels.oxygenProcent) + "]");
+    }
+    
+    }
+
     static String consoleInput(List<String> options) {
         String input = "[RESPONSE GOES HERE]";
 
@@ -236,11 +252,13 @@ public class spaceShip {
         }
         System.out.println("\n".repeat(10));
 
-        // Might make actions taken increase by custom value, but for now all actions take the same amount of time.
+        // Might make actions taken increase by custom value, but for now all actions
+        // take the same amount of time.
         actionstaken += 1;
+        perRoundCheck();
         
         return input;
-
+        
     }
 
     static ArrayList<human> PopulateCrew() {
