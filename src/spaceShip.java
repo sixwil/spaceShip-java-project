@@ -100,13 +100,13 @@ public class spaceShip {
 
             int success = npcs.darel.work();
 
-            if (success == 0){
+            if (success == 0) {
                 youLoseScene();
             }
-            if (success == 1 || success == 2){
+            if (success == 1 || success == 2) {
                 hallwayRoomScene();
             }
-            
+
         }
     }
 
@@ -122,23 +122,69 @@ public class spaceShip {
 
             System.out.println("2. Try and blow it up yourself (RIP bombguy)");
         }
-        
+
         String response = consoleInput(Arrays.asList("1", "2"));
-        if (response.equals("1")){
-            
-        }
-        if (response.equals("2")){
-            if (npcs.darel.hurt == hurtScale.dead){
-                System.out.println("You're not the demolitionist, you blow everything and everyone up");
-            youLoseScene();
+        if (response.equals("1")) {
+
+            String guess = "000";
+
+            while (true) {
+                guess = System.console().readLine("guess 00 -> 99: ");
+                if (guess.equals("42")) {
+                    break;
+                } else {
+                    System.out.println("Wrong, try again");
+                }
             }
+
+            System.out.println("jippie! you get some tressure");
+            youWinScene();
+
+        }
+        if (response.equals("2")) {
+            if (npcs.darel.hurt == hurtScale.dead) {
+                System.out.println("You're not the demolitionist, you blow everything and everyone up");
+                youLoseScene();
+            }
+
+            if (npcs.darel.hurt != hurtScale.dead) {
+
+                int success = npcs.darel.work();
+
+                if (success == 0) {
+                    youLoseScene();
+                }
+                if (success == 1 || success == 2) {
+                    System.out.println("jippie! you get some tressure");
+                    youWinScene();
+                }
+
+            }
+
         }
     }
 
     static void hallwayRoomScene() {
         if (spaceShipLevels.reactorFixed && spaceShipLevels.oxygenFixed) {
-            System.out.println("you fixed all the things and now you get to go home");
-            youWinScene();
+            System.out.println("""
+                you fixed all the things and get to look around a bit closer,
+                you gather some supplies lying around and find a locked vault,
+                the vault is analog and therefore cant be hacked,
+                do you:
+                1. go home without it
+                2. try and break into the vault
+                """);
+
+            String response = consoleInput(Arrays.asList("1", "2"));
+
+            if (response.equals("1")){
+                System.out.println("you quit while youre ahead, and leave");
+                youWinScene();
+            }
+            if (response.equals("2")){
+                vaultScene();
+            }
+
         } else if (spaceShipLevels.reactorFixed) {
             System.out.println("you go towards the other room (oxygen)");
             oxygenRoomScene();
