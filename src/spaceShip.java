@@ -138,7 +138,7 @@ public class spaceShip {
                 fix it?
                 1. Close the window""");
 
-        if (spaceShipLevels.reactorFixed) {
+        if (!spaceShipLevels.reactorFixed) {
             System.out.println("2. Check out reactor room first");
             response = consoleInput(Arrays.asList("1", "2"));
             if (response.contains("2")) {
@@ -239,8 +239,6 @@ public class spaceShip {
 
     static boolean perRoundCheck() {
         boolean proceed = true;
-        
-
 
         if (!spaceShipLevels.oxygenFixed) {
             spaceShipLevels.oxygenProcent -= 5;
@@ -256,13 +254,12 @@ public class spaceShip {
 
         }
 
-
         if (!spaceShipLevels.reactorFixed) {
             spaceShipLevels.reactorPressureProcent *= 2;
 
             System.out.println("Reactor pressure level: " + spaceShipLevels.reactorPressureProcent + "%");
             System.out.println("[" + "#".repeat(spaceShipLevels.reactorPressureProcent)
-            + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
+                    + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
             System.out.println();
 
             if (spaceShipLevels.reactorPressureProcent >= 100) {
@@ -271,9 +268,6 @@ public class spaceShip {
             }
 
         }
-
-
-
 
         return proceed;
     }
