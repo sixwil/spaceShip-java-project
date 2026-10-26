@@ -8,6 +8,7 @@ public class spaceShip {
         static int oxygenProcent = 50;
         static Boolean reactorFixed = false;
         static Boolean oxygenFixed = false;
+        static int reactorPressureProcent = 1;
 
     }
 
@@ -124,36 +125,36 @@ public class spaceShip {
 
         // System.out.println("you go towards the");
 
+        // if (spaceShipLevels.reactorFixed) {
+        // System.out.println("""
+        // The oxygen runs out before you make it inside, everyone dies
+        // """);
+        // youLoseScene();
+        // } else {
+
+        System.out.println("""
+
+                Turns out someone left a space-window ajar in the oxygen room
+                fix it?
+                1. Close the window""");
+
         if (spaceShipLevels.reactorFixed) {
-            System.out.println("""
-                    The oxygen runs out before you make it inside, everyone dies
-                    """);
-            youLoseScene();
+            System.out.println("2. Check out reactor room first");
+            response = consoleInput(Arrays.asList("1", "2"));
+            if (response.contains("2")) {
+                reactorRoomScene(0, 0);
+            }
         } else {
-
-            System.out.println("""
-
-                    Turns out someone left a space-window ajar in the oxygen room
-                    fix it?
-                    1. Close the window""");
-
-            if (spaceShipLevels.reactorFixed) {
-                System.out.println("2. Check out reactor room first");
-                response = consoleInput(Arrays.asList("1", "2"));
-                if (response.contains("2")) {
-                    reactorRoomScene(0, 0);
-                }
-            } else {
-                response = consoleInput(Arrays.asList("1"));
-            }
-
-            if (response.contains("1")) {
-                System.out.println("you close the window, why do they even have that?");
-                spaceShipLevels.oxygenFixed = true;
-                hallwayRoomScene();
-            }
-
+            response = consoleInput(Arrays.asList("1"));
         }
+
+        if (response.contains("1")) {
+            System.out.println("you close the window, why do they even have that?");
+            spaceShipLevels.oxygenFixed = true;
+            hallwayRoomScene();
+        }
+
+        // }
     }
 
     static void reactorRoomScene(int bonkLevel, int c) {
@@ -221,7 +222,7 @@ public class spaceShip {
                     """);
 
         }
-// Dev tool to take a bunch of turns quickly.
+        // Dev tool to take a bunch of turns quickly.
         if (response.equals("0")) {
             prolougeScene();
 
@@ -238,18 +239,42 @@ public class spaceShip {
 
     static boolean perRoundCheck() {
         boolean proceed = true;
-        // if
+        
+
+
         if (!spaceShipLevels.oxygenFixed) {
             spaceShipLevels.oxygenProcent -= 5;
             System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
             System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
                     + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
+            System.out.println();
+
             if (spaceShipLevels.oxygenProcent <= 0) {
                 youLoseScene();
                 proceed = false;
             }
 
         }
+
+
+        if (!spaceShipLevels.reactorFixed) {
+            spaceShipLevels.reactorPressureProcent *= 2;
+
+            System.out.println("Reactor pressure level: " + spaceShipLevels.reactorPressureProcent + "%");
+            System.out.println("[" + "#".repeat(spaceShipLevels.reactorPressureProcent)
+            + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
+            System.out.println();
+
+            if (spaceShipLevels.reactorPressureProcent >= 100) {
+                youLoseScene();
+                proceed = false;
+            }
+
+        }
+
+
+
+
         return proceed;
     }
 
