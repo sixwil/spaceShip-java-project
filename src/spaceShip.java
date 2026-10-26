@@ -197,7 +197,7 @@ public class spaceShip {
                             """, countingWord));
             String response = consoleInput(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
-            if (response != "No return"){
+            if (response != "No return") {
 
                 bonkLevel += Integer.parseInt(response);
                 reactorRoomScene(bonkLevel, c);
@@ -240,7 +240,7 @@ public class spaceShip {
     static void youLoseScene() {
         finished = true;
         System.out.println("YOU LOSE, GOOD DAY SIR -William the wonky");
-        
+
     }
 
     static void youWinScene() {
@@ -251,33 +251,39 @@ public class spaceShip {
     static boolean perRoundCheck() {
         boolean proceed = true;
 
-        if (!spaceShipLevels.oxygenFixed) {
-            System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
-            System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
-            + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
-            System.out.println();
-            
-            if (spaceShipLevels.oxygenProcent <= 0) {
-                youLoseScene();
-                proceed = false;
-            }
-            
-            spaceShipLevels.oxygenProcent -= 10;
-        }
+        if (!finished) {
 
-        if (!spaceShipLevels.reactorFixed) {
-            spaceShipLevels.reactorPressureProcent *= 2;
+            if (!spaceShipLevels.oxygenFixed) {
+                
+                spaceShipLevels.oxygenProcent -= 10;
+                
+                if (spaceShipLevels.oxygenProcent <= 0) {
+                    youLoseScene();
+                    proceed = false;
+                }
+                
 
-            System.out.println("Reactor pressure level: " + spaceShipLevels.reactorPressureProcent + "%");
-            System.out.println("[" + "#".repeat(spaceShipLevels.reactorPressureProcent)
-                    + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
-            System.out.println();
-
-            if (spaceShipLevels.reactorPressureProcent >= 100) {
-                youLoseScene();
-                proceed = false;
+                System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
+                System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
+                        + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
+                System.out.println();
+                
             }
 
+            if (!spaceShipLevels.reactorFixed) {
+                spaceShipLevels.reactorPressureProcent *= 2;
+
+                System.out.println("Reactor pressure level: " + spaceShipLevels.reactorPressureProcent + "%");
+                System.out.println("[" + "#".repeat(spaceShipLevels.reactorPressureProcent)
+                        + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
+                System.out.println();
+
+                if (spaceShipLevels.reactorPressureProcent >= 100) {
+                    youLoseScene();
+                    proceed = false;
+                }
+
+            }
         }
 
         return proceed;
