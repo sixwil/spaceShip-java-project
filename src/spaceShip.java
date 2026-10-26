@@ -3,6 +3,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class spaceShip {
+    // ArrayList<human> folks = PopulateCrew();
+    class npcs {
+        static Demolitionist darel = new Demolitionist("darel");
+    }
 
     static boolean finished = false;
 
@@ -22,17 +26,17 @@ public class spaceShip {
 
     public static void main(String[] args) {
 
-        ArrayList<human> folks = PopulateCrew();
-
         // for (human human : folks) {
         // System.out.println(human.name);
         // }
 
         // System.out.println(response);
-
+        
         prolougeScene();
         // lockedDoorScene();
         // reactorRoomScene(0, 0);
+
+        
 
     }
 
@@ -84,6 +88,10 @@ public class spaceShip {
                 youLoseScene();
             } else if (coinflip < 0.6) {
                 System.out.println("both the door and the bomb guy are reduced to ashes");
+                
+                npcs.darel.health = 0;
+                npcs.darel.hurt = hurtScale.dead;
+
                 hallwayRoomScene();
             } else {
                 System.out.println("there is now a hole where the door used to be, suprisingly no ones hurt");
@@ -254,34 +262,38 @@ public class spaceShip {
         if (!finished) {
 
             if (!spaceShipLevels.oxygenFixed) {
-                
+
                 spaceShipLevels.oxygenProcent -= 10;
-                
+
                 if (spaceShipLevels.oxygenProcent <= 0) {
+                    System.out.println("you run out of oxygen and die");
                     youLoseScene();
                     proceed = false;
                 }
-                
 
                 System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
                 System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
                         + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
                 System.out.println();
-                
+
             }
 
             if (!spaceShipLevels.reactorFixed) {
                 spaceShipLevels.reactorPressureProcent *= 2;
+                if (spaceShipLevels.reactorPressureProcent > 100) {
+                    spaceShipLevels.reactorPressureProcent = 100;
+                }
+
+                if (spaceShipLevels.reactorPressureProcent >= 100) {
+                    System.out.println("the reactor explodes");
+                    youLoseScene();
+                    proceed = false;
+                }
 
                 System.out.println("Reactor pressure level: " + spaceShipLevels.reactorPressureProcent + "%");
                 System.out.println("[" + "#".repeat(spaceShipLevels.reactorPressureProcent)
                         + "_".repeat(100 - spaceShipLevels.reactorPressureProcent) + "]");
                 System.out.println();
-
-                if (spaceShipLevels.reactorPressureProcent >= 100) {
-                    youLoseScene();
-                    proceed = false;
-                }
 
             }
         }
@@ -315,21 +327,21 @@ public class spaceShip {
         }
     }
 
-    static ArrayList<human> PopulateCrew() {
-        ArrayList<human> folks = new ArrayList<>();
+    // static ArrayList<human> PopulateCrew() {
+    // ArrayList<human> folks = new ArrayList<>();
 
-        Hacker Jebediah = new Hacker("jeb1");
-        folks.add(Jebediah);
+    // Hacker Jebediah = new Hacker("jeb1");
+    // folks.add(Jebediah);
 
-        Demolitionist Jebediah2 = new Demolitionist("jeb2");
-        folks.add(Jebediah2);
+    // Demolitionist darel = new Demolitionist("darel");
+    // folks.add(darel);
 
-        // System.out.println(Jebediah.hunger);
-        // // eatFood(Jebediah);
-        // System.out.println(Jebediah.hunger);
+    // // System.out.println(Jebediah.hunger);
+    // // // eatFood(Jebediah);
+    // // System.out.println(Jebediah.hunger);
 
-        return folks;
-    }
+    // return folks;
+    // }
 
     enum hurtScale {
         dead,
