@@ -100,8 +100,10 @@ public class spaceShip {
             } else {
                 System.out.println("there is now a hole where the door used to be, suprisingly no ones hurt");
                 int eaten = npcs.darel.eatFood(npcs.darel);
-                if (eaten < 0){
-                    npcs.darel.hunger += eaten;
+                spaceShipLevels.food -= eaten;
+                if (spaceShipLevels.food < 0){
+                    npcs.darel.hunger += spaceShipLevels.food;
+                    spaceShipLevels.food = 0;
                 }
                 hallwayRoomScene();
             }
