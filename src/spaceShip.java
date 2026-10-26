@@ -10,7 +10,8 @@ public class spaceShip {
         public static Hacker harold = new Hacker("harold");
 
     }
-   static ArrayList<human> npcsList = new ArrayList<human>();
+
+    static ArrayList<human> npcsList = new ArrayList<human>();
     static Field[] npcFields = npcs.class.getFields();
 
     static boolean finished = false;
@@ -36,11 +37,11 @@ public class spaceShip {
             // null because they are static, idk dude
             human npc = (human) npcField.get(null);
             npcsList.add(npc);
-            
+
         }
 
         // for (human x : npcsList) {
-        //     System.out.println(x.health);
+        // System.out.println(x.health);
         // }
         // for (human human : folks) {
         // System.out.println(human.name);
@@ -97,28 +98,39 @@ public class spaceShip {
 
         if (response.equals("2")) {
 
-            npcs.darel.work();
+            int success = npcs.darel.work();
 
-            var coinflip = Math.random();
-            if (coinflip < 0.3) {
-                System.out.println("bomb guys bomb was to big and everyone dies");
+            if (success == 0){
                 youLoseScene();
-            } else if (coinflip < 0.6) {
-                System.out.println("both the door and the bomb guy are reduced to ashes");
-
-                npcs.darel.health = 0;
-                npcs.darel.hurt = hurtScale.dead;
-
+            }
+            if (success == 1 || success == 2){
                 hallwayRoomScene();
-            } else {
-                System.out.println("there is now a hole where the door used to be, suprisingly no ones hurt");
-                int eaten = npcs.darel.eatFood(npcs.darel);
-                spaceShipLevels.food -= eaten;
-                if (spaceShipLevels.food < 0) {
-                    npcs.darel.hunger += spaceShipLevels.food;
-                    spaceShipLevels.food = 0;
-                }
-                hallwayRoomScene();
+            }
+            
+        }
+    }
+
+    static void vaultScene() {
+        System.out.println("""
+                You notice that the vault is analog and can not be hacked,
+                Do you want to:
+                1. Try and guess it
+                 """);
+        if (npcs.darel.hurt != hurtScale.dead) {
+            System.out.println("2. Let bombguy have a crack at it");
+        } else {
+
+            System.out.println("2. Try and blow it up yourself (RIP bombguy)");
+        }
+        
+        String response = consoleInput(Arrays.asList("1", "2"));
+        if (response.equals("1")){
+            
+        }
+        if (response.equals("2")){
+            if (npcs.darel.hurt == hurtScale.dead){
+                System.out.println("You're not the demolitionist, you blow everything and everyone up");
+            youLoseScene();
             }
         }
     }
@@ -271,7 +283,11 @@ public class spaceShip {
     static void youLoseScene() {
         finished = true;
         System.out.println("YOU LOSE, GOOD DAY SIR -William the wonky");
+        for (human npc : npcsList) {
+            npc.health = 0;
+            npc.hurt = hurtScale.dead;
 
+        }
     }
 
     static void youWinScene() {
@@ -405,7 +421,7 @@ public class spaceShip {
     }
 
     interface worker {
-        void work();
+        int work();
     }
 
     static class Hacker extends human implements worker {
@@ -421,8 +437,9 @@ public class spaceShip {
         }
 
         @Override
-        public void work() {
+        public int work() {
             hunger -= 10;
+            return 0;
         }
     }
 
@@ -439,8 +456,33 @@ public class spaceShip {
         }
 
         @Override
-        public void work() {
+        public int work() {
             hunger -= 15;
+
+            var coinflip = Math.random();
+            if (coinflip < 0.3) {
+                System.out.println("bomb guys bomb was to big and everyone dies");
+                return 0;
+                // youLoseScene();
+            } else if (coinflip < 0.6) {
+                System.out.println("both it and the bomb guy are reduced to ashes");
+
+                npcs.darel.health = 0;
+                npcs.darel.hurt = hurtScale.dead;
+
+                // hallwayRoomScene();
+                return 1;
+            } else {
+                System.out.println("there is now a hole where the door used to be, suprisingly no ones hurt");
+                int eaten = npcs.darel.eatFood(npcs.darel);
+                spaceShipLevels.food -= eaten;
+                if (spaceShipLevels.food < 0) {
+                    npcs.darel.hunger += spaceShipLevels.food;
+                    spaceShipLevels.food = 0;
+                }
+                // hallwayRoomScene();
+                return 2;
+            }
         }
     }
 
