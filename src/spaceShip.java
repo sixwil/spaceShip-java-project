@@ -6,13 +6,15 @@ public class spaceShip {
 
     class spaceShipLevels {
         static int oxygenProcent = 50;
-        static Boolean   reactorFixed = false;
+        static Boolean reactorFixed = false;
         static Boolean oxygenFixed = false;
 
     }
-// actionstaken keeps takes of how many actions are taken, does nothing now  but might be used in future.
+
+    // actionstaken keeps takes of how many actions are taken, does nothing now but
+    // might be used in future.
     static int actionstaken = 0;
-    
+
     // static int currentSceneId = 0;
 
     public static void main(String[] args) {
@@ -85,10 +87,10 @@ public class spaceShip {
     }
 
     static void hallwayRoomScene() {
-        if    (spaceShipLevels.reactorFixed && spaceShipLevels.oxygenFixed) {
+        if (spaceShipLevels.reactorFixed && spaceShipLevels.oxygenFixed) {
             System.out.println("you fixed all the things and now you get to go home");
             youWinScene();
-        } else if    (spaceShipLevels.reactorFixed) {
+        } else if (spaceShipLevels.reactorFixed) {
             System.out.println("you go towards the other room (oxygen)");
             oxygenRoomScene();
         } else if (spaceShipLevels.oxygenFixed) {
@@ -122,7 +124,7 @@ public class spaceShip {
 
         // System.out.println("you go towards the");
 
-        if    (spaceShipLevels.reactorFixed) {
+        if (spaceShipLevels.reactorFixed) {
             System.out.println("""
                     The oxygen runs out before you make it inside, everyone dies
                     """);
@@ -135,7 +137,7 @@ public class spaceShip {
                     fix it?
                     1. Close the window""");
 
-            if (   spaceShipLevels.reactorFixed) {
+            if (spaceShipLevels.reactorFixed) {
                 System.out.println("2. Check out reactor room first");
                 response = consoleInput(Arrays.asList("1", "2"));
                 if (response.contains("2")) {
@@ -167,7 +169,7 @@ public class spaceShip {
         }
 
         if (bonkLevel == 4) {
-           spaceShipLevels.reactorFixed = true;
+            spaceShipLevels.reactorFixed = true;
             System.out.println("""
                         your technical expertise forces the reactor back online
                     """);
@@ -206,18 +208,24 @@ public class spaceShip {
                     (type only the corresponding number or in the console and then press enter)
                 """);
 
-        String response = consoleInput(Arrays.asList("1", "2"));
+        String response = consoleInput(Arrays.asList("1", "2", "0"));
 
         if (response.equals("1")) {
             lockedDoorScene();
-        } else {
+        }
+        if (response.equals("2")) {
             System.err.println("""
                     ...okay?
                     you ignore the call to adventure
                     coward.
                     """);
-        }
 
+        }
+// Dev tool to take a bunch of turns quickly.
+        if (response.equals("0")) {
+            prolougeScene();
+
+        }
     }
 
     static void youLoseScene() {
@@ -228,14 +236,21 @@ public class spaceShip {
         System.out.println("YOU WIN, GOOD NIGHT MA'AM -bill the normal");
     }
 
-    static void perRoundCheck() {
-        // if 
-     if (! spaceShipLevels.oxygenFixed) {
-        spaceShipLevels.oxygenProcent -= 5; 
-        System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%" );
-        System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent) + "_".repeat(100-spaceShipLevels.oxygenProcent) + "]");
-    }
-    
+    static boolean perRoundCheck() {
+        boolean proceed = true;
+        // if
+        if (!spaceShipLevels.oxygenFixed) {
+            spaceShipLevels.oxygenProcent -= 5;
+            System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
+            System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
+                    + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
+            if (spaceShipLevels.oxygenProcent <= 0) {
+                youLoseScene();
+                proceed = false;
+            }
+
+        }
+        return proceed;
     }
 
     static String consoleInput(List<String> options) {
@@ -255,10 +270,13 @@ public class spaceShip {
         // Might make actions taken increase by custom value, but for now all actions
         // take the same amount of time.
         actionstaken += 1;
-        perRoundCheck();
-        
-        return input;
-        
+        boolean proceed = perRoundCheck();
+        if (proceed) {
+            return input;
+
+        } else {
+            return "No return";
+        }
     }
 
     static ArrayList<human> PopulateCrew() {
