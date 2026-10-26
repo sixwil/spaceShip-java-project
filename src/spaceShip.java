@@ -18,7 +18,7 @@ public class spaceShip {
 
     class spaceShipLevels {
         static int food = 50;
-        static int oxygenProcent = 50;
+        static int oxygenProcent = 50 + 10;
         static Boolean reactorFixed = false;
         static Boolean oxygenFixed = false;
         static int reactorPressureProcent = 1;
@@ -120,13 +120,13 @@ public class spaceShip {
             System.out.println("2. Let bombguy have a crack at it");
         } else {
 
-            System.out.println("2. Try and blow it up yourself (RIP bombguy)");
+            System.out.println("2. Try and explode it open yourself (RIP bombguy)");
         }
 
         String response = consoleInput(Arrays.asList("1", "2"));
         if (response.equals("1")) {
 
-            String guess = "000";
+            String guess = "00";
 
             while (true) {
                 guess = System.console().readLine("guess 00 -> 99: ");
@@ -143,7 +143,8 @@ public class spaceShip {
         }
         if (response.equals("2")) {
             if (npcs.darel.hurt == hurtScale.dead) {
-                System.out.println("You're not the demolitionist, you blow everything and everyone up");
+                System.out
+                        .println("You're not the demolitionist, your arrogance gets everyone killed in an explosion.");
                 youLoseScene();
             }
 
@@ -166,22 +167,23 @@ public class spaceShip {
 
     static void hallwayRoomScene() {
         if (spaceShipLevels.reactorFixed && spaceShipLevels.oxygenFixed) {
+            spaceShipLevels.food += 50;
             System.out.println("""
-                you fixed all the things and get to look around a bit closer,
-                you gather some supplies lying around and find a locked vault,
-                the vault is analog and therefore cant be hacked,
-                do you:
-                1. go home without it
-                2. try and break into the vault
-                """);
+                    you fixed all the things and get to look around a bit closer,
+                    you gather some supplies lying around and find a locked vault,
+                    the vault is analog and therefore cant be hacked,
+                    do you:
+                    1. go home without it
+                    2. try and break into the vault
+                    """);
 
             String response = consoleInput(Arrays.asList("1", "2"));
 
-            if (response.equals("1")){
+            if (response.equals("1")) {
                 System.out.println("you quit while youre ahead, and leave");
                 youWinScene();
             }
-            if (response.equals("2")){
+            if (response.equals("2")) {
                 vaultScene();
             }
 
@@ -511,7 +513,7 @@ public class spaceShip {
                 return 0;
                 // youLoseScene();
             } else if (coinflip < 0.6) {
-                System.out.println("both it and the bomb guy are reduced to ashes");
+                System.out.println("both the door and the bomb guy are reduced to ashes");
 
                 npcs.darel.health = 0;
                 npcs.darel.hurt = hurtScale.dead;
