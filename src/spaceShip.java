@@ -4,6 +4,8 @@ import java.util.List;
 
 public class spaceShip {
 
+    static boolean finished = false;
+
     class spaceShipLevels {
         static int oxygenProcent = 50;
         static Boolean reactorFixed = false;
@@ -192,8 +194,11 @@ public class spaceShip {
                             """, countingWord));
             String response = consoleInput(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
-            bonkLevel += Integer.parseInt(response);
-            reactorRoomScene(bonkLevel, c);
+            if (response != "No return"){
+
+                bonkLevel += Integer.parseInt(response);
+                reactorRoomScene(bonkLevel, c);
+            }
         }
 
         // else if (Arrays.asList("0","1","2","3").contains(response)){}
@@ -230,10 +235,13 @@ public class spaceShip {
     }
 
     static void youLoseScene() {
+        finished = true;
         System.out.println("YOU LOSE, GOOD DAY SIR -William the wonky");
+        
     }
 
     static void youWinScene() {
+        finished = true;
         System.out.println("YOU WIN, GOOD NIGHT MA'AM -bill the normal");
     }
 
@@ -241,7 +249,7 @@ public class spaceShip {
         boolean proceed = true;
 
         if (!spaceShipLevels.oxygenFixed) {
-            spaceShipLevels.oxygenProcent -= 5;
+            spaceShipLevels.oxygenProcent -= 10;
             System.out.println("Oxygen level: " + spaceShipLevels.oxygenProcent + "%");
             System.out.println("[" + "#".repeat(spaceShipLevels.oxygenProcent)
                     + "_".repeat(100 - spaceShipLevels.oxygenProcent) + "]");
