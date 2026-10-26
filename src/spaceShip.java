@@ -11,6 +11,7 @@ public class spaceShip {
     static boolean finished = false;
 
     class spaceShipLevels {
+        static int food = 50;
         static int oxygenProcent = 50;
         static Boolean reactorFixed = false;
         static Boolean oxygenFixed = false;
@@ -82,19 +83,26 @@ public class spaceShip {
         }
 
         if (response.equals("2")) {
+
+            npcs.darel.work();
+
             var coinflip = Math.random();
             if (coinflip < 0.3) {
                 System.out.println("bomb guys bomb was to big and everyone dies");
                 youLoseScene();
             } else if (coinflip < 0.6) {
                 System.out.println("both the door and the bomb guy are reduced to ashes");
-                
+
                 npcs.darel.health = 0;
                 npcs.darel.hurt = hurtScale.dead;
 
                 hallwayRoomScene();
             } else {
                 System.out.println("there is now a hole where the door used to be, suprisingly no ones hurt");
+                int eaten = npcs.darel.eatFood(npcs.darel);
+                if (eaten < 0){
+                    npcs.darel.hunger += eaten;
+                }
                 hallwayRoomScene();
             }
         }
@@ -366,7 +374,7 @@ public class spaceShip {
         int oxygen = 50;
         int health = 50;
 
-        abstract void eatFood(human person);
+        abstract int eatFood(human person);
 
         // boolean death() {
         // if (hunger == 100
@@ -392,9 +400,10 @@ public class spaceShip {
         }
 
         @Override
-        void eatFood(human person) {
+        int eatFood(human person) {
             hunger += 10;
-        }
+            return 10;
+        }   
 
         @Override
         public void work() {
@@ -409,8 +418,9 @@ public class spaceShip {
         }
 
         @Override
-        void eatFood(human person) {
+        int eatFood(human person) {
             hunger += 15;
+            return 15;
         }
 
         @Override
