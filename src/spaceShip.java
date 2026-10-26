@@ -4,7 +4,8 @@ import java.util.List;
 
 public class spaceShip {
 
-    static int currentSceneId = 0;
+    static int actionstaken = 0;
+    // static int currentSceneId = 0;
     static Boolean reactorFixed = false;
     static Boolean oxygenFixed = false;
 
@@ -40,7 +41,7 @@ public class spaceShip {
     static void lockedDoorScene() {
 
         System.out.println("""
-            
+
                     there is a locked door that youd like to not be that anymore,
                     who do you send to un-lock the door?
                     1. the hacker (takes longer, but is safer)
@@ -124,9 +125,9 @@ public class spaceShip {
 
             System.out.println("""
 
-                Turns out someone left a space-window ajar in the oxygen room
-                fix it?
-                1. Close the window""");
+                    Turns out someone left a space-window ajar in the oxygen room
+                    fix it?
+                    1. Close the window""");
 
             if (!reactorFixed) {
                 System.out.println("2. Check out reactor room first");
@@ -234,7 +235,12 @@ public class spaceShip {
             }
         }
         System.out.println("\n".repeat(10));
+
+        // Might make actions taken increase by custom value, but for now all actions take the same amount of time.
+        actionstaken += 1;
+        
         return input;
+
     }
 
     static ArrayList<human> PopulateCrew() {
