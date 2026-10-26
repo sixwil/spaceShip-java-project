@@ -1,12 +1,17 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class spaceShip {
-    // ArrayList<human> folks = PopulateCrew();
     class npcs {
-        static Demolitionist darel = new Demolitionist("darel");
+        public static Demolitionist darel = new Demolitionist("darel");
+        public static Hacker harold = new Hacker("harold");
+
     }
+   static ArrayList<human> npcsList = new ArrayList<human>();
+    static Field[] npcFields = npcs.class.getFields();
 
     static boolean finished = false;
 
@@ -19,25 +24,33 @@ public class spaceShip {
 
     }
 
-    // actionstaken keeps takes of how many actions are taken, does nothing now but
+    // actionstaken keeps track of how many actions are taken, does nothing now but
     // might be used in future.
     static int actionstaken = 0;
 
     // static int currentSceneId = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException {
+        for (Field npcField : npcFields) {
 
+            // null because they are static, idk dude
+            human npc = (human) npcField.get(null);
+            npcsList.add(npc);
+            
+        }
+
+        // for (human x : npcsList) {
+        //     System.out.println(x.health);
+        // }
         // for (human human : folks) {
         // System.out.println(human.name);
         // }
 
         // System.out.println(response);
-        
+
         prolougeScene();
         // lockedDoorScene();
         // reactorRoomScene(0, 0);
-
-        
 
     }
 
@@ -101,7 +114,7 @@ public class spaceShip {
                 System.out.println("there is now a hole where the door used to be, suprisingly no ones hurt");
                 int eaten = npcs.darel.eatFood(npcs.darel);
                 spaceShipLevels.food -= eaten;
-                if (spaceShipLevels.food < 0){
+                if (spaceShipLevels.food < 0) {
                     npcs.darel.hunger += spaceShipLevels.food;
                     spaceShipLevels.food = 0;
                 }
@@ -405,7 +418,7 @@ public class spaceShip {
         int eatFood(human person) {
             hunger += 10;
             return 10;
-        }   
+        }
 
         @Override
         public void work() {
